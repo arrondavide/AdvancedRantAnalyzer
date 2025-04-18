@@ -1,11 +1,6 @@
 # Use a lightweight Python base image
 FROM python:3.9-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
 # Set environment variables for writable directories
 ENV TRANSFORMERS_CACHE=/workspace/cache
 ENV NLTK_DATA=/workspace/nltk_data
@@ -13,18 +8,26 @@ ENV NLTK_DATA=/workspace/nltk_data
 # Create writable directories
 RUN mkdir -p /workspace/cache /workspace/nltk_data
 
-# Set working directory
-WORKDIR /workspace
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements.txt for dependency installation
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Download Spacy model if required
+RUN python -m spacy download en_core_web_md
 
 # Copy the application codebase
 COPY . .
 
-# Expose port for application
+# Expose the port the app runs on
 EXPOSE 8000
 
-# Start the FastAPI app
+# Command to start the FastAPI app
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
