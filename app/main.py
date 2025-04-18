@@ -6,6 +6,14 @@ from app.tracker import RantTracker
 # Initialize FastAPI app
 app = FastAPI(title="Advanced Rant Analyzer API", version="1.0")
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Advanced Rant Analyzer API"}
+
+@app.post("/analyze")
+def analyze():
+    return {"message": "This is the analyze endpoint"}
+    
 # Initialize the analyzer and tracker
 analyzer = AdvancedRantAnalyzer()
 tracker = RantTracker()
