@@ -1,0 +1,19 @@
+{
+    "name": "Advanced Rant Analyzer",
+    "dockerFile": "Dockerfile",
+    "context": "..",
+    "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true
+    },
+    "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker",
+        "ms-pytest.pytest"
+    ],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "forwardPorts": [
+        8000
+    ],
+    "remoteUser": "vscode"
+}
